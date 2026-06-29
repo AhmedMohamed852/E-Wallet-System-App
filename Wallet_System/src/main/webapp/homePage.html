@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinanceHub - Digital Wallet</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Bar */
+nav {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: 800;
+    color: white;
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: white;
+}
+
+.user-welcome {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.user-badge {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    font-size: 18px;
+}
+
+/* Main Container */
+.main-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.container {
+    background: white;
+    border-radius: 30px;
+    padding: 50px;
+    max-width: 1000px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(240, 147, 251, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    left: -50%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(245, 87, 108, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Header Section */
+.header-section {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 1;
+}
+
+.header-section h1 {
+    font-size: 48px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.header-section p {
+    font-size: 18px;
+    color: #666;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Buttons Grid */
+.buttons-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.action-btn {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border: none;
+    border-radius: 20px;
+    padding: 35px 25px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+    z-index: -1;
+}
+
+.action-btn:hover::before {
+    left: 100%;
+}
+
+.action-btn:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn:active {
+    transform: translateY(-4px);
+}
+
+/* Individual Button Colors */
+.btn-deposit {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.btn-deposit:hover {
+    box-shadow: 0 20px 40px rgba(245, 87, 108, 0.4);
+}
+
+.btn-withdraw {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+.btn-withdraw:hover {
+    box-shadow: 0 20px 40px rgba(79, 172, 254, 0.4);
+}
+
+.btn-transfer {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+}
+
+.btn-transfer:hover {
+    box-shadow: 0 20px 40px rgba(67, 233, 123, 0.4);
+}
+
+.btn-balance {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    color: white;
+}
+
+.btn-balance:hover {
+    box-shadow: 0 20px 40px rgba(250, 112, 154, 0.4);
+}
+
+.btn-history {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-history:hover {
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+}
+
+.btn-profile {
+    background: linear-gradient(135deg, #f8b195 0%, #f67c6a 100%);
+    color: white;
+}
+
+.btn-profile:hover {
+    box-shadow: 0 20px 40px rgba(248, 177, 149, 0.4);
+}
+
+.btn-logout {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+    color: white;
+}
+
+.btn-logout:hover {
+    box-shadow: 0 20px 40px rgba(235, 51, 73, 0.4);
+}
+
+.btn-icon {
+    font-size: 40px;
+    display: block;
+}
+
+.btn-text {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 15px;
+}
+
+.btn-subtext {
+    font-size: 12px;
+    opacity: 0.8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* Form */
+form {
+    width: 100%;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 25px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        padding: 40px 30px;
+    }
+
+    .header-section h1 {
+        font-size: 40px;
+    }
+
+    .buttons-container {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .action-btn {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-wrapper {
+        padding: 25px 15px;
+    }
+
+    .container {
+        padding: 30px 25px;
+        border-radius: 25px;
+    }
+
+    .header-section h1 {
+        font-size: 32px;
+    }
+
+    .header-section p {
+        font-size: 16px;
+    }
+
+    .buttons-container {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 18px;
+    }
+
+    .action-btn {
+        padding: 25px 18px;
+        border-radius: 18px;
+    }
+
+    .btn-icon {
+        font-size: 32px;
+    }
+
+    .btn-text {
+        font-size: 14px;
+    }
+
+    .nav-user {
+        gap: 15px;
+    }
+
+    .user-welcome {
+        display: none;
+    }
+
+    nav {
+        padding: 0.8rem 1.5rem;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .logo-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-wrapper {
+        padding: 20px 10px;
+    }
+
+    .container {
+        padding: 25px 15px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .container::before,
+    .container::after {
+        display: none;
+    }
+
+    .header-section h1 {
+        font-size: 26px;
+        margin-bottom: 10px;
+    }
+
+    .header-section p {
+        font-size: 14px;
+    }
+
+    .buttons-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .action-btn {
+        padding: 20px 15px;
+        border-radius: 16px;
+        gap: 12px;
+    }
+
+    .btn-icon {
+        font-size: 28px;
+    }
+
+    .btn-text {
+        font-size: 12px;
+    }
+
+    .btn-subtext {
+        display: none;
+    }
+
+    nav {
+        padding: 0.7rem 1rem;
+    }
+
+    .logo {
+        font-size: 18px;
+        gap: 8px;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .user-badge {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    footer {
+        font-size: 11px;
+        padding: 15px 10px;
+    }
+}
+
+/* Accessibility */
+.action-btn:focus {
+    outline: 3px solid rgba(102, 126, 234, 0.5);
+    outline-offset: 2px;
+}
+
+/* Animation for buttons on load */
+.action-btn {
+    animation: slideUp 0.5s ease-out backwards;
+}
+
+.action-btn:nth-child(1) { animation-delay: 0.1s; }
+.action-btn:nth-child(2) { animation-delay: 0.2s; }
+.action-btn:nth-child(3) { animation-delay: 0.3s; }
+.action-btn:nth-child(4) { animation-delay: 0.4s; }
+.action-btn:nth-child(5) { animation-delay: 0.5s; }
+.action-btn:nth-child(6) { animation-delay: 0.6s; }
+.action-btn:nth-child(7) { animation-delay: 0.7s; }
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="nav-content">
+        <a href="#" class="logo">
+            <div class="logo-icon">💳</div>
+            FinanceHub
+        </a>
+        <div class="nav-user">
+            <span class="user-welcome">Welcome back</span>
+            <div class="user-badge">JD</div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-wrapper">
+    <div class="container">
+        <div class="header-section">
+            <h1>Digital Wallet</h1>
+            <p>Choose an action to get started</p>
+        </div>
+
+        <form action="WalletController" method="post">
+            <div class="buttons-container">
+
+                <button class="action-btn btn-deposit" type="submit" name="action" value="deposit">
+                    <span class="btn-icon">💰</span>
+                    <span class="btn-text">Deposit</span>
+                </button>
+
+                <button class="action-btn btn-withdraw" type="submit" name="action" value="withdraw">
+                    <span class="btn-icon">💸</span>
+                    <span class="btn-text">Withdraw</span>
+                </button>
+
+                <button class="action-btn btn-transfer" type="submit" name="action" value="transfer">
+                    <span class="btn-icon">🔄</span>
+                    <span class="btn-text">Transfer</span>
+                </button>
+
+                <button class="action-btn btn-balance" type="submit" name="action" value="balance">
+                    <span class="btn-icon">💳</span>
+                    <span class="btn-text">Balance</span>
+                </button>
+
+             <!--    <button class="action-btn btn-history" type="submit" name="action" value="history">
+                    <span class="btn-icon">📜</span>
+                    <span class="btn-text">History</span>
+                </button> -->
+
+                <button class="action-btn btn-profile" type="submit" name="action" value="profile">
+                    <span class="btn-icon">👤</span>
+                    <span class="btn-text">Profile</span>
+                </button>
+
+                <button class="action-btn btn-logout" type="submit" name="action" value="logout">
+                    <span class="btn-icon">🚪</span>
+                    <span class="btn-text">Logout</span>
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    © 2024 FinanceHub - Your Secure Digital Wallet. All rights reserved.
+</footer>
+
+</body>
+
+</html>

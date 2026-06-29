@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - FinanceHub</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Animated Background Elements */
+.bg-element {
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.1;
+    pointer-events: none;
+    animation: float 6s ease-in-out infinite;
+}
+
+.bg-element-1 {
+    width: 300px;
+    height: 300px;
+    background: white;
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+}
+
+.bg-element-2 {
+    width: 400px;
+    height: 400px;
+    background: white;
+    bottom: -150px;
+    right: -150px;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(30px); }
+}
+
+/* Container */
+.register-container {
+    background: white;
+    border-radius: 30px;
+    padding: 50px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 10;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.register-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.register-logo {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 20px;
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+}
+
+.register-header h1 {
+    font-size: 32px;
+    color: #1a202c;
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+.register-header p {
+    font-size: 15px;
+    color: #718096;
+    font-weight: 500;
+}
+
+/* Form */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3748;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.form-group input {
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    background: #f7fafc;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-group input::placeholder {
+    color: #a0aec0;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Password Toggle */
+.password-group {
+    position: relative;
+    grid-column: 1 / -1;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #718096;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #667eea;
+}
+
+/* Terms Checkbox */
+.terms-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13px;
+    color: #718096;
+    line-height: 1.5;
+}
+
+.terms-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: #667eea;
+}
+
+.terms-group a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.terms-group a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Submit Button */
+.register-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    text-transform: uppercase;
+}
+
+.register-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+}
+
+.register-button:active {
+    transform: translateY(-1px);
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 25px 0;
+    color: #cbd5e0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.divider span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a0aec0;
+    text-transform: uppercase;
+}
+
+/* Footer Links */
+.register-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.register-footer p {
+    font-size: 14px;
+    color: #718096;
+    margin-bottom: 12px;
+}
+
+.register-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.register-footer a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+.login-link {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.login-link span {
+    color: #718096;
+}
+
+.login-link a {
+    color: #667eea;
+    font-weight: 700;
+    text-decoration: none;
+    margin-left: 5px;
+    display: inline;
+}
+
+.login-link a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .register-container {
+        padding: 35px 25px;
+        border-radius: 25px;
+    }
+
+    .register-header h1 {
+        font-size: 26px;
+    }
+
+    .register-logo {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .form-group input {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .register-button {
+        padding: 14px 20px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bg-element {
+        display: none;
+    }
+
+    .register-container {
+        padding: 30px 20px;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .register-header h1 {
+        font-size: 24px;
+    }
+
+    .register-header p {
+        font-size: 13px;
+    }
+
+    .register-logo {
+        width: 45px;
+        height: 45px;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .register-form {
+        gap: 18px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-group input {
+        padding: 12px 14px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .register-button {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+
+    .register-footer {
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+
+    .divider {
+        margin: 20px 0;
+    }
+
+    .divider span {
+        font-size: 11px;
+    }
+
+    .terms-group {
+        font-size: 12px;
+    }
+
+    .terms-group input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* Input Animation */
+.form-group input {
+    animation: slideInInput 0.5s ease-out backwards;
+}
+
+.form-group:nth-child(1) input {
+    animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) input {
+    animation-delay: 0.2s;
+}
+
+.form-row:nth-child(2) .form-group:nth-child(1) input {
+    animation-delay: 0.2s;
+}
+
+.form-row:nth-child(2) .form-group:nth-child(2) input {
+    animation-delay: 0.3s;
+}
+
+.form-group:nth-child(3) input {
+    animation-delay: 0.4s;
+}
+
+.form-group:nth-child(4) input {
+    animation-delay: 0.5s;
+}
+
+@keyframes slideInInput {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Accessibility */
+input:focus {
+    outline: none;
+}
+
+button:focus {
+    outline: 3px solid rgba(102, 126, 234, 0.5);
+    outline-offset: 2px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Background Elements -->
+<div class="bg-element bg-element-1"></div>
+<div class="bg-element bg-element-2"></div>
+
+<!-- Register Container -->
+<div class="register-container">
+    <!-- Header -->
+    <div class="register-header">
+        <div class="register-logo">💳</div>
+        <h1>Create Account</h1>
+        <p>Join FinanceHub today and manage your wallet</p>
+    </div>
+
+    <!-- Form -->
+    <form action="WalletController" method="POST" class="register-form">
+         <input type="hidden" name="action" value="signUp">
+        <!-- First Name & Last Name Row -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input 
+                    type="text" 
+                    id="first_name" 
+                    name="first_name" 
+                    placeholder="Ahmed"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input 
+                    type="text" 
+                    id="last_name" 
+                    name="last_name" 
+                    placeholder="Doe"
+                    required
+                >
+            </div>
+        </div>
+
+        <!-- Phone Input -->
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input 
+                type="tel" 
+                id="phone" 
+                name="phone" 
+                placeholder="+1 (555) 000-0000"
+                pattern="[0-9\s\-\+\(\)]+"
+                required
+            >
+        </div>
+
+        <!-- Password Input -->
+        <div class="form-group password-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Create a strong password"
+                required
+            >
+            <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="terms-group">
+            <input type="checkbox" id="terms" name="terms" required>
+            <label for="terms" style="cursor: pointer; margin: 0;">
+                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="register-button">Create Account</button>
+
+    </form>
+
+    <!-- Divider -->
+    <div class="divider">
+        <span>Already have an account?</span>
+    </div>
+
+    <!-- Footer -->
+    <div class="register-footer">
+        <p>Already registered?</p>
+        <div class="login-link">
+            <span>Sign in to your account</span>
+            <a href="login.html">Sign In Now →</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const toggle = document.querySelector('.password-toggle');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggle.textContent = '🙈';
+    } else {
+        passwordInput.type = 'password';
+        toggle.textContent = '👁️';
+    }
+}
+</script>
+
+</body>
+
+</html>
