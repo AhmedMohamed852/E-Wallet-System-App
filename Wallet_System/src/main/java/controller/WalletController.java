@@ -74,163 +74,164 @@ public class WalletController extends HttpServlet {
 		 }
 	}
 
+	
+	// ============================================================================
+	// Check Wallet Balance
+	// Retrieve and display the current wallet balance.
+	// ============================================================================
 				
-				private void balance(HttpServletRequest request,
-			            HttpServletResponse response)
-			throws ServletException, IOException {
-			
-			HttpSession session = request.getSession(false);
-			
-			if(session == null){
-			
-			response.sendRedirect(request.getContextPath()
-			       + "/pages/login.jsp");
-			
+				private void balance(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+				
+				HttpSession session = request.getSession(false);
+				
+				if(session == null){
+				
+				response.sendRedirect(request.getContextPath()+ "/pages/login.jsp");
+				return;
+				
+				}
+				
+				User user = (User) session.getAttribute("user");
+				
+				try {
+				
+				double balance =
+				       walletService.getBalance(user.getId().intValue());
+				
+				request.setAttribute("balance", balance);
+				
+				request.getRequestDispatcher("/pages/balance.jsp")
+				       .forward(request, response);
+				
+				} catch (Exception e) {
+				
+				e.printStackTrace();
+				
+				}
+				
+				}
+				
+			// ============================================================================
+			// Transfer Money
+			// Transfer money from the current user to another user by phone number.
+			// ============================================================================
+	
+			private void transfer(HttpServletRequest request,HttpServletResponse response) throws IOException {
+	
+		    HttpSession session = request.getSession(false);
+	
+		    if(session == null){
+		    	
+		        response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+		        return;
+		    }
+	
+		    User sender = (User) session.getAttribute("user");
+	
+		    String phone =
+		            request.getParameter("phone");
+	
+		    double amount =
+		            Double.parseDouble(request.getParameter("amount"));
+	
+		    String description =
+		            request.getParameter("description");
+	
+		    try {
+	
+		        User receiver = walletService.findByPhone(phone);
+	
+		        if(receiver == null){
+	
+		            response.sendRedirect(request.getContextPath()
+		                    + "/pages/transfer.jsp?user=notfound");
+	
+		            return;
+	
+		        }
+	
+		        boolean result = walletService.transfer(
+	
+		                sender.getId().intValue(),
+		                receiver.getId().intValue(),
+		                amount,
+		                description);
+	
+		        if(result){
+	
+		           response.sendRedirect(request.getContextPath() + "/pages/home.jsp?transfer=success");
+	
+		        }else{
+	
+		            response.sendRedirect(request.getContextPath() + "/pages/transfer.jsp?error=1");
+	
+		        }
+	
+		    } catch (Exception e) {
+	
+		        e.printStackTrace();
+		    }
+	
+		}
+
+
+		// ============================================================================
+		// Withdraw Money
+		// Deduct money from the logged-in user's wallet.
+		// ============================================================================
+				
+	private void withdraw(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+	HttpSession session = request.getSession(false);
+	
+		if(session == null){
+	
+			response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
 			return;
-			
-			}
-			
-			User user = (User) session.getAttribute("user");
-			
-			try {
-			
-			double balance =
-			       walletService.getBalance(user.getId().intValue());
-			
-			request.setAttribute("balance", balance);
-			
-			request.getRequestDispatcher("/pages/balance.jsp")
-			       .forward(request, response);
-			
-			} catch (Exception e) {
-			
-			e.printStackTrace();
-			
-			}
-			
-			}
+		 }
+	
+				User user = (User) session.getAttribute("user");
+				
+				double amount =
+				  Double.parseDouble(request.getParameter("amount"));
+				
+				String description =
+				  request.getParameter("description");
+				
+				try {
+				
+				boolean result = walletService.withdraw(
+				      user.getId().intValue(),
+				      amount,
+				      description);
+				
+				if(result){
+				
+				  response.sendRedirect(request.getContextPath()
+				          + "/pages/home.jsp?withdraw=success");
+				
+				}else{
+				
+				  response.sendRedirect(request.getContextPath()
+				          + "/pages/withdraw.jsp?error=1");
+				
+				}
+				
+				} catch (Exception e) {
+				
+				e.printStackTrace();
+				
+				}
+				
+				}
 
-				private void transfer(HttpServletRequest request,
-	                      HttpServletResponse response)
-	        throws IOException {
-
-	    HttpSession session = request.getSession(false);
-
-	    if(session == null){
-
-	        response.sendRedirect(request.getContextPath()
-	                + "/pages/login.jsp");
-
-	        return;
-
-	    }
-
-	    User sender = (User) session.getAttribute("user");
-
-	    String phone =
-	            request.getParameter("phone");
-
-	    double amount =
-	            Double.parseDouble(request.getParameter("amount"));
-
-	    String description =
-	            request.getParameter("description");
-
-	    try {
-
-	        User receiver = walletService.findByPhone(phone);
-
-	        if(receiver == null){
-
-	            response.sendRedirect(request.getContextPath()
-	                    + "/pages/transfer.jsp?user=notfound");
-
-	            return;
-
-	        }
-
-	        boolean result = walletService.transfer(
-
-	                sender.getId().intValue(),
-	                receiver.getId().intValue(),
-	                amount,
-	                description);
-
-	        if(result){
-
-	            response.sendRedirect(request.getContextPath()
-	                    + "/pages/home.jsp?transfer=success");
-
-	        }else{
-
-	            response.sendRedirect(request.getContextPath()
-	                    + "/pages/transfer.jsp?error=1");
-
-	        }
-
-	    } catch (Exception e) {
-
-	        e.printStackTrace();
-
-	    }
-
-	}
-
-
-	private void withdraw(HttpServletRequest request,
-            HttpServletResponse response)
-throws IOException {
-
-HttpSession session = request.getSession(false);
-
-if(session == null){
-
-response.sendRedirect(request.getContextPath()
-      + "/pages/login.jsp");
-
-return;
-
-}
-
-			User user = (User) session.getAttribute("user");
-			
-			double amount =
-			  Double.parseDouble(request.getParameter("amount"));
-			
-			String description =
-			  request.getParameter("description");
-			
-			try {
-			
-			boolean result = walletService.withdraw(
-			      user.getId().intValue(),
-			      amount,
-			      description);
-			
-			if(result){
-			
-			  response.sendRedirect(request.getContextPath()
-			          + "/pages/home.jsp?withdraw=success");
-			
-			}else{
-			
-			  response.sendRedirect(request.getContextPath()
-			          + "/pages/withdraw.jsp?error=1");
-			
-			}
-			
-			} catch (Exception e) {
-			
-			e.printStackTrace();
-			
-			}
-			
-			}
-
-
-			private void deposit(HttpServletRequest request,
-		            HttpServletResponse response)
-		throws IOException {
+	
+	// ============================================================================
+	// Deposit Money
+	// Add money to the logged-in user's wallet.
+	// ============================================================================
+	
+		private void deposit(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		HttpSession session = request.getSession(false);
 		
@@ -277,6 +278,11 @@ return;
 		
 		}
 
+	// ============================================================================
+	// Handle User Login
+	// Validate user credentials, create session & cookie, then redirect.
+	// ============================================================================
+		
 	private void login(HttpServletRequest request, HttpServletResponse response)
 	        throws IOException {
 
@@ -313,6 +319,12 @@ return;
 
 	}
 
+	
+	
+	// ============================================================================
+	// Display Home Page
+	// Redirect user to the main dashboard.
+	// ============================================================================
 
 	private void homePage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
@@ -320,10 +332,12 @@ return;
 		
 	}
 
-
-				private void signUp(HttpServletRequest request,
-			            HttpServletResponse response)
-			throws IOException {
+	
+	// ============================================================================
+	// Handle New User Registration
+	// Create a new user account and automatically create a wallet.
+	// ============================================================================
+			private void signUp(HttpServletRequest request,  HttpServletResponse response) throws IOException {
 			
 			User user = new User();
 			
@@ -356,14 +370,14 @@ return;
 			
 			}
 				
+			// ============================================================================
+			// Logout User
+			// Destroy session, remove cookie, and redirect to login page.
+			// ============================================================================
 				
-				
-				private void logout(HttpServletRequest request,
-	                    HttpServletResponse response)
-	        throws IOException {
+		private void logout(HttpServletRequest request, HttpServletResponse response)throws IOException {
 
-	    HttpSession session =
-	            request.getSession(false);
+	    HttpSession session = request.getSession(false);
 
 	    if(session != null){
 
